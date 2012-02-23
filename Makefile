@@ -25,7 +25,7 @@ MFLAGS		= -shared
 
 SOURCES 	= main.c
 ifeq ($(OS),Linux)
-SOURCES 	+= gtk.c
+SOURCES 	+= gtkmain.c
 endif
 OBJECTS 	= $(SOURCES:.c=.o)
 EXECUTABLE 	= mudbot
