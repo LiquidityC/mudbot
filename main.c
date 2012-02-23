@@ -627,7 +627,7 @@ void generate_config( char *file_name )
 			"host \"imperian.com\"\n"
 			"port \"23\"\n\n\n" );
 
-	fprintf( fl, "# Autologin. Requires ATCP.\n"
+	fprintf( fl, "# Autologin. Requires ATCP or GMCP.\n"
 			"# Keep your password here at your own risk! Better just leave these empty.\n\n"
 			"user \"\"\n"
 			"pass \"\"\n\n\n" );

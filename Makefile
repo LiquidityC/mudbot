@@ -10,23 +10,23 @@ GTK_LFLAGS	=
 endif
 
 # Compiler
-CC 		= gcc
-ifeq ($(BUILD),dist)
-CFLAGS 	= -c -O3 $(GTK_CFLAGS)
-else
-CFLAGS 	= -c -Wall -g $(GTK_CFLAGS)
-endif
-LDFLAGS = -L./deps/ $(GTK_LFLAGS) -lz -ldl
-
+CC 			= gcc
 SOCFLAGS	= -fPIC $(GTK_CFLAGS)
+CFLAGS		= -c -Wall $(GTK_CFLAGS)
 ifeq ($(BUILD),dist)
+CFLAGS 		+= -O3 
 SOCFLAGS 	+= -O3
 else
+CFLAGS 		+= -g
 SOCFLAGS 	+= -Wall -g
 endif
+LDFLAGS 	= -L./deps/ $(GTK_LFLAGS) -lz -ldl
 MFLAGS		= -shared
 
-SOURCES 	= main.c gtk.c
+SOURCES 	= main.c
+ifeq ($(OS),Linux)
+SOURCES 	+= gtk.c
+endif
 OBJECTS 	= $(SOURCES:.c=.o)
 EXECUTABLE 	= mudbot
 
