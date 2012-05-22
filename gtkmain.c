@@ -152,7 +152,7 @@ void gtk_show_editor( )
 	gtk_table_attach_defaults (GTK_TABLE (table), scrollwindow, 0, 2, 0, 1);
 
 	/* Create separator and ad it to table */
-	separator = gtk_hseparator_new();
+	separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
 	gtk_table_attach_defaults (GTK_TABLE (table), separator, 0, 2, 1, 2);
 	gtk_widget_show (separator);
 
