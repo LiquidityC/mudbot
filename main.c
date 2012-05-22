@@ -3708,10 +3708,10 @@ void process_buffer( char *raw_buf, int bytes )
 #endif
 				continue;
 			} else if ( iac_string[1] == (char) WILL && iac_string[2] == (char) TELOPT_COMPRESS ) {
-					const char dont_compress[] = { IAC, DONT, TELOPT_COMPRESS, 0 };
-					send_to_server( (char *) dont_compress );
-					debugf( "mccp: Server asked for TELOPT_COMPRESS, rejecting." );
-					continue;
+				const char dont_compress[] = { IAC, DONT, TELOPT_COMPRESS, 0 };
+				send_to_server( (char *) dont_compress );
+				debugf( "mccp: Server asked for TELOPT_COMPRESS, rejecting." );
+				continue;
 			} else if ( iac_string[1] == (char) WILL &&
 					iac_string[2] == (char) TELOPT_GMCP &&
 					strcmp( gmcp_login_as, "none" ) )
