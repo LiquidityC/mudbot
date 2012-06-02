@@ -29,10 +29,12 @@
 #include "i_mapper.h"
 
 #include <sys/stat.h>
+#include <assert.h>
 
 int mapper_version_major = 5;
 int mapper_version_minor = 8;
 
+void free_ptr(void *ptr);
 
 char *i_mapper_id = I_MAPPER_ID "\r\n" I_MAPPER_H_ID "\r\n" HEADER_ID "\r\n" MODULE_ID "\r\n";
 
@@ -618,10 +620,10 @@ WORMHOLE_DATA *create_wormhole( ROOM_DATA *room )
 void free_exit( EXIT_DATA *spexit )
 {
 	if ( spexit->command )
-		free( spexit->command );
+		free_ptr( spexit->command );
 	if ( spexit->message )
-		free( spexit->message );
-	free( spexit );
+		free_ptr( spexit->message );
+	free_ptr( spexit );
 }
 
 
@@ -710,7 +712,7 @@ void free_room( ROOM_DATA *room )
 	ROOM_DATA *r;
 
 	if ( room->name )
-		free( room->name );
+		free_ptr( room->name );
 
 	for ( e = room->special_exits; e; e = e_next )
 	{
@@ -729,7 +731,7 @@ void free_room( ROOM_DATA *room )
 	while ( room->tags )
 		unlink_element( room->tags );
 
-	free( room );
+	free_ptr( room );
 }
 
 
@@ -803,7 +805,7 @@ void destroy_area( AREA_DATA *area )
 		}
 
 	/* Free it up. */
-	free( area );
+	free_ptr( area );
 }
 
 
@@ -832,7 +834,7 @@ void destroy_wormhole( WORMHOLE_DATA *worm )
 				}
 	}
 
-	free( worm );
+	free_ptr( worm );
 }
 
 
@@ -905,8 +907,8 @@ void destroy_map( )
 
 		/* Free it up. */
 		if ( area->name )
-			free( area->name );
-		free( area );
+			free_ptr( area->name );
+		free_ptr( area );
 	}
 
 	/* Hash table. */
@@ -1471,7 +1473,7 @@ int parse_title( const char *line )
 																		  send_to_server( "survey\r\n" );
 																	  }
 																	  if ( current_room->name )
-																		  free( current_room->name );
+																		  free_ptr( current_room->name );
 																	  current_room->name = strdup( line );
 																	  break;
 																  }}
@@ -1987,7 +1989,7 @@ void check_area( char *name )
 
 		area = current_room->area;
 		if ( area->name )
-			free( area->name );
+			free_ptr( area->name );
 		area->name = strdup( name );
 		clientf( C_R " (" C_G "updated" C_R ")" C_0 );
 
@@ -3355,7 +3357,7 @@ void rem_divine( char *name)
 		previous->next = current->next;
 	}
 
-	free(current);
+	free_ptr(current);
 }
 
 int save_settings( char *file )
@@ -3812,7 +3814,7 @@ int load_settings( char *file )
 		else if ( !strcmp( option, "Mapwing-Command" ) )
 		{
 			if ( !strcmp( value, "nothing" ) ) {
-                wingcmd = malloc(60); strcpy(wingcmd, value);wingcmd=NULL;free(wingcmd);}
+                wingcmd = malloc(60); strcpy(wingcmd, value);wingcmd=NULL;free_ptr(wingcmd);}
 			else if ( strcmp( value, "nothing" ) )
 				{
 				    wingcmd = malloc(60); strcpy(wingcmd, value);
@@ -4390,7 +4392,7 @@ int load_binary_map( char *file )
 						r->room_type = t;
 						break;
 					}
-				free( type_name );
+				free_ptr( type_name );
 			}
 
 			/* Special Exits. */
@@ -4550,7 +4552,7 @@ void convert_vnum_exits( )
 					debugf( "Can't link room %d (%s) to %d. (wormhole)",
 							room->vnum, room->name, worms->vnum );
 					worms->to = NULL;
-					free( worms );
+					free_ptr( worms );
 				}
 				else
 					worms->to->worm_pointed_by = 1;
@@ -5702,7 +5704,7 @@ void remove_players( TIMER *self )
 	{
 		if ( r->person_here )
 		{
-			free( r->person_here );
+			free_ptr( r->person_here );
 			r->person_here = NULL;
 		}
 	}
@@ -5716,8 +5718,7 @@ void mark_player( ROOM_DATA *room, char *name )
 
 	if ( room->person_here )
 	{
-		free( room->person_here );
-		room->person_here = NULL;
+		free_ptr( room->person_here );
 	}
 	if ( name )
 	{
@@ -5725,8 +5726,7 @@ void mark_player( ROOM_DATA *room, char *name )
 		for ( r = world; r; r = r->next_in_world )
 			if ( r->person_here && !strcmp( r->person_here, name ) )
 			{
-				free( r->person_here );
-				r->person_here = NULL;
+				free_ptr( r->person_here );
 			}
 
 		room->person_here = strdup( name );
@@ -8204,7 +8204,7 @@ void check_autobump( )
 
 void i_mapper_process_server_line( LINE *l )
 {
-	const char *block_messages[] =
+	static const char *block_messages[] =
 	{    "You cannot move that fast, slow down!",
 		"You cannot move until you have regained equilibrium.",
 		"You are regaining balance and are unable to move.",
@@ -8267,7 +8267,8 @@ void i_mapper_process_server_line( LINE *l )
 		"You cannot leap to that direction as it is indoors.",
 		"You cannot swim while mounted.",
 		"You have reached bedrock and can burrow no deeper.",
-		"The wings shoot you quickly towards the ceiling, stopping just short of impact, and gently lower you back to the ground.",
+		"The wings shoot you quickly towards the ceiling, stopping just short of impact, \
+			and gently lower you back to the ground.",
 		"There is no wormhole here.",
 		"The ground there is solid rock and cannot be passed through.",
 		"You cannot leap when there is a roof over your head.",
@@ -10404,8 +10405,7 @@ void do_map_wing( char *arg)
   }
   if (strstr(arg,"rem"))
   {
-   wingcmd = NULL;
-   free(wingcmd);
+   free_ptr(wingcmd);
    wingroom = 0;
    clientfr("Wing command and room deleted");
   }
@@ -11082,7 +11082,7 @@ void do_map_teleport( char *arg )
 			if ( i++ == nr )
 			{
 				if ( spexit->message )
-					free( spexit->message );
+					free_ptr( spexit->message );
 				p = arg;
 				while ( *p )
 				{
@@ -11127,7 +11127,7 @@ void do_map_teleport( char *arg )
 			if ( i++ == nr )
 			{
 				if ( spexit->command )
-					free( spexit->command );
+					free_ptr( spexit->command );
 
 				if ( arg[0] )
 					spexit->command = strdup( arg );
@@ -12789,7 +12789,7 @@ void do_room_addn(char *arg )
 	{
 		clientff(C_R"[\""C_G"%s"C_R"\" Replaced by \""C_G"%s"C_R"\" as main room name]\r\n"C_0,
 				current_room->name, current_room->additional_name[atoi( arg+9 )]);
-		free( current_room->name );
+		free_ptr( current_room->name );
 		current_room->name = current_room->additional_name[atoi( arg+9 )];
 		current_room->additional_name[atoi( arg+9 )] = NULL;
 	}
@@ -13070,7 +13070,7 @@ void do_room_merge( char *arg )
 				link_element( tag, &new_room->tags );
 			}
 			else
-				free( old_room->tags->p );
+				free_ptr( old_room->tags->p );
 
 			unlink_element( old_room->tags );
 		}
@@ -13201,7 +13201,7 @@ void do_room_tag( char *arg )
 	if ( tag )
 	{
 		/* Unlink it. */
-		free( tag->p );
+		free_ptr( tag->p );
 		unlink_element( tag );
 	}
 	else
@@ -13515,7 +13515,7 @@ void do_exit_warp( char *arg )
 						current_room->vnum, current_room->name, newwarp->vnum );
 				clientfr( "Encountered an error, refer to console." );
 				newwarp->to = NULL;
-				free( newwarp );
+				free_ptr( newwarp );
 				return;
 			}
 			else
@@ -13873,7 +13873,7 @@ void do_exit_special( char *arg )
 			if ( i++ == nr )
 			{
 				if ( spexit->message )
-					free( spexit->message );
+					free_ptr( spexit->message );
 				p = arg;
 				while ( *p )
 				{
@@ -13919,7 +13919,7 @@ void do_exit_special( char *arg )
 			if ( i++ == nr )
 			{
 				if ( spexit->command )
-					free( spexit->command );
+					free_ptr( spexit->command );
 
 				spexit->command = strdup( arg );
 				done = 1;
@@ -14968,4 +14968,12 @@ int i_mapper_process_client_aliases( char *line )
 	}
 
 	return 0;
+}
+
+void free_ptr(void *ptr)
+{
+	if(ptr != NULL) {
+		free(ptr);
+	}
+	ptr = NULL;
 }
