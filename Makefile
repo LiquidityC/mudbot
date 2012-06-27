@@ -10,7 +10,11 @@ GTK_LFLAGS	=
 endif
 
 # Compiler
+ifeq ($(COMP),clang)
+CC 			= clang
+else
 CC 			= gcc
+endif
 SOCFLAGS	= -fPIC $(GTK_CFLAGS)
 CFLAGS		= -c -Wall $(GTK_CFLAGS)
 ifeq ($(BUILD),dist)

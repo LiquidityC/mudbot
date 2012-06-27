@@ -385,7 +385,7 @@ ENTRANCE( i_mapper_module_register )
 	self->process_server_prompt = i_mapper_process_server_prompt;
 	self->process_client_command = NULL;
 	self->process_client_aliases = i_mapper_process_client_aliases;
-/*	self->process_server_paragraph = i_mapper_process_server_paragraph;*/
+	/*	self->process_server_paragraph = i_mapper_process_server_paragraph;*/
 	self->build_custom_prompt = NULL;
 	self->main_loop = NULL;
 	self->update_descriptors = NULL;
@@ -2256,34 +2256,34 @@ void parse_ruler( char *line )
 
 void nowinglongreset()
 {
-    wingtmproomdisable = 0;
-    clientff(C_W"[Automatic wings enabled]\r\n"C_0);
+	wingtmproomdisable = 0;
+	clientff(C_W"[Automatic wings enabled]\r\n"C_0);
 }
 
 void parse_nowing(char *line)
 {
-    if (strcmp("Your powers cannot carry you over continents or planes.",line) && strcmp("You open your mouth to speak, but the sound dies as soon as it leaves your mouth.",line))
-    return;
+	if (strcmp("Your powers cannot carry you over continents or planes.",line) && strcmp("You open your mouth to speak, but the sound dies as soon as it leaves your mouth.",line))
+		return;
 
-    if (!strcmp("You open your mouth to speak, but the sound dies as soon as it leaves your mouth.",line))
-    {wingtmproomdisable=1;
-     clientff(C_D"\r\n[Automatic wings disabled for 10 seconds]\r\n"C_0);
-	 add_timer( "wings_disabled_timer", 10, nowinglongreset, 0, 0, 0 );
-	 if ( auto_walk )
-	 {
-	     auto_walk = 2;
-	 }
-      return;}
+	if (!strcmp("You open your mouth to speak, but the sound dies as soon as it leaves your mouth.",line))
+	{wingtmproomdisable=1;
+		clientff(C_D"\r\n[Automatic wings disabled for 10 seconds]\r\n"C_0);
+		add_timer( "wings_disabled_timer", 10, nowinglongreset, 0, 0, 0 );
+		if ( auto_walk )
+		{
+			auto_walk = 2;
+		}
+		return;}
 
-    if ( !current_room->area->nowingarea ) {
-    current_room->area->nowingarea = 1;
-    clientfr("Area added to NoWings List");
-    if ( auto_walk )
-	 {
-	     auto_walk = 2;
-	 }
-    return;
-    }
+	if ( !current_room->area->nowingarea ) {
+		current_room->area->nowingarea = 1;
+		clientfr("Area added to NoWings List");
+		if ( auto_walk )
+		{
+			auto_walk = 2;
+		}
+		return;
+	}
 }
 
 int can_dash( ROOM_DATA *room )
@@ -2360,32 +2360,32 @@ void go_next( )
 		}
 		if (area_leylinesearch)
 		{
-		ROOM_DATA *r;
-		int i;
+			ROOM_DATA *r;
+			int i;
 
-		r = sleyroom, i = 0;
-		/* Count rooms left. */
-		while ( r )
-		{
-			r = r->next_in_area;
-			i++;
-		}
+			r = sleyroom, i = 0;
+			/* Count rooms left. */
+			while ( r )
+			{
+				r = r->next_in_area;
+				i++;
+			}
 
-		clientff( C_R "\r\n[Rooms left: %d.]\r\n" C_0, i - 1 );
+			clientff( C_R "\r\n[Rooms left: %d.]\r\n" C_0, i - 1 );
 
-		sleyroom = sleyroom->next_in_area;
+			sleyroom = sleyroom->next_in_area;
 
-		if ( !sleyroom )
-		{
-			area_leylinesearch = 0;
-			clientfr( "All rooms searched." );
-			return;
-		}
+			if ( !sleyroom )
+			{
+				area_leylinesearch = 0;
+				clientfr( "All rooms searched." );
+				return;
+			}
 
-		init_openlist( NULL );
-		init_openlist( sleyroom );
-		path_finder( );
-		go_next( );
+			init_openlist( NULL );
+			init_openlist( sleyroom );
+			path_finder( );
+			go_next( );
 		}
 	}
 	else if ( troopmove == 1 && troopn != NULL )
@@ -2426,13 +2426,13 @@ void go_next( )
 			auto_walk = 2;}
 	}
 	else if ( artimsg || cmp_room_wing() ) {
-	    artimsg = wingcmd;
+		artimsg = wingcmd;
 		sprintf( buf, "say %s", artimsg );
 		clientfr( buf );
 		sprintf( buf, "say %s\r\n", artimsg );
 		send_to_server( buf );
 		auto_walk = 1;
-/*		mode = GET_UNLOST; */
+		/*		mode = GET_UNLOST; */
 		artimsg = NULL;
 	}
 	else if ( swim_next && mounted ) {
@@ -3025,21 +3025,21 @@ void show_map_new( ROOM_DATA *room )
 								if ( map_new[x][y].room->shrine == 3 )
 									s = C_R "#";} else {
 										if ( map_new[x][y].room->shrine == 1 )
-											s = C_W "¥";
+											s = C_W "?";
 										if ( map_new[x][y].room->shrine == 2 )
-											s = C_G "¥";
+											s = C_G "?";
 										if ( map_new[x][y].room->shrine == 3 )
-											s = C_R "¥";
+											s = C_R "?";
 									}
 						}
 						else if ( map_new[x][y].room->shrineeff && !disable_shrineradius )
 						{
 							if ( map_new[x][y].room->shrineeff == 1 )
-								s = C_W "¤";
+								s = C_W "?";
 							if ( map_new[x][y].room->shrineeff == 2 )
-								s = C_G "¤";
+								s = C_G "?";
 							if ( map_new[x][y].room->shrineeff == 3 )
-								s = C_R "¤";
+								s = C_R "?";
 						}
 						else if ( map_new[x][y].room->special_exits )
 							s = "\33[1;35m+";
@@ -3048,11 +3048,11 @@ void show_map_new( ROOM_DATA *room )
 							s = vnum_buf;
 						}
 						else if ( ( map_new[x][y].in_out ) && ( map_new[x][y].up || map_new[x][y].down ) )
-							s = C_C "ö";
+							s = C_C "o";
 						else if ( map_new[x][y].room->shop )
 							s = C_Y "$";
 						else if ( map_new[x][y].up && map_new[x][y].down )
-							s = "\33[1;35m¦";
+							s = "\33[1;35m?";
 						else if ( map_new[x][y].up )
 							s = "\33[1;35m^";
 						else if ( map_new[x][y].down )
@@ -3871,11 +3871,11 @@ int load_settings( char *file )
 		else if ( !strcmp( option, "Mapwing-Command" ) )
 		{
 			if ( !strcmp( value, "nothing" ) ) {
-                wingcmd = malloc(60); strcpy(wingcmd, value);wingcmd=NULL;free_ptr(wingcmd);}
+				wingcmd = malloc(60); strcpy(wingcmd, value);wingcmd=NULL;free_ptr(wingcmd);}
 			else if ( strcmp( value, "nothing" ) )
-				{
-				    wingcmd = malloc(60); strcpy(wingcmd, value);
-				}
+			{
+				wingcmd = malloc(60); strcpy(wingcmd, value);
+			}
 			else
 				debugf( "Parse error in file '%s', expected 'yes' or 'no', got '%s' instead.", file, value );
 		}
@@ -4110,8 +4110,8 @@ void save_map( char *file )
 			fprintf( fl, "Note: %s\n", area->note );
 		if ( area->disabled )
 			fprintf( fl, "Disabled\n" );
-        if ( area->nowingarea )
-            fprintf( fl, "NoWings\n");
+		if ( area->nowingarea )
+			fprintf( fl, "NoWings\n");
 		if ( area->city )
 			fprintf( fl, "City\n" );
 		fprintf( fl, "\n" );
@@ -5318,26 +5318,26 @@ void init_openlist( ROOM_DATA *room )
 
 int cmp_room_wing()
 {
-    if (wingroom == 0 || wingcmd == NULL || disable_artifacts || wingtmpdisable || wingtmproomdisable )
-    return 0;
+	if (wingroom == 0 || wingcmd == NULL || disable_artifacts || wingtmpdisable || wingtmproomdisable )
+		return 0;
 
-    if (!strcmp(current_room->area->name, "The Havens.")) {
-    return 0;}
-    if (!strcmp(current_room->area->name,"Hunting Grounds.")) {
-    return 0;}
-    if (current_room->area->nowingarea) {
-    return 0;}
+	if (!strcmp(current_room->area->name, "The Havens.")) {
+		return 0;}
+	if (!strcmp(current_room->area->name,"Hunting Grounds.")) {
+		return 0;}
+	if (current_room->area->nowingarea) {
+		return 0;}
 
-    ROOM_DATA *room;
-    int lennorm = 0;
-    int lenwing = 0;
+	ROOM_DATA *room;
+	int lennorm = 0;
+	int lenwing = 0;
 
-    for (room = current_room; room; room = room->pf_parent) {lennorm++;}
-    for (room = get_room(wingroom); room; room = room->pf_parent) {lenwing++;}
-    if (lenwing<lennorm) {
-    return 1;}
-    else {
-    return 0;}
+	for (room = current_room; room; room = room->pf_parent) {lennorm++;}
+	for (room = get_room(wingroom); room; room = room->pf_parent) {lenwing++;}
+	if (lenwing<lennorm) {
+		return 1;}
+	else {
+		return 0;}
 }
 
 int get_cost( ROOM_DATA *src, ROOM_DATA *dest )
@@ -5493,7 +5493,7 @@ void show_path( ROOM_DATA *current )
 	int wrap = 7; /* strlen( "[Path: " ) */
 	int nrmax = 100;
 	int hexited = 0;
-    int aused = 0;
+	int aused = 0;
 
 	DEBUG( "show_path" );
 
@@ -5517,12 +5517,13 @@ void show_path( ROOM_DATA *current )
 
 	sprintf( buf, C_R "[Path: " C_G );
 	autowing = cmp_room_wing();
-    if (autowing) {
-    room = get_room( wingroom );
-    }
-    else {
-    room = current;}
-	for ( room = room; room && room->pf_parent && nr < nrmax; room = room->pf_parent )
+	if (autowing) {
+		room = get_room( wingroom );
+	}
+	else {
+		room = current;
+	}
+	for (; room && room->pf_parent && nr < nrmax; room = room->pf_parent )
 	{
 		if ( wrap > 70 && !disable_pathwrap )
 		{
@@ -5542,25 +5543,25 @@ void show_path( ROOM_DATA *current )
 			wrap += strlen(wingcmd);
 			aused = 1;
 
-		    if ( wrap > 70 && !disable_pathwrap )
-		    {
-			    strcat( buf, C_R ",\r\n" C_G );
-			    wrap = 0;
-		    }
-		    else if ( nr++ )
-		    {
-			    strcat( buf, C_R ", " C_G );
-			    wrap += 2;
-            }
+			if ( wrap > 70 && !disable_pathwrap )
+			{
+				strcat( buf, C_R ",\r\n" C_G );
+				wrap = 0;
+			}
+			else if ( nr++ )
+			{
+				strcat( buf, C_R ", " C_G );
+				wrap += 2;
+			}
 
 			if ( ( room->pf_direction != -1 ) && ( room->pf_direction != -2 ) )
-	    	{
-			    if ( must_swim( room, room->pf_parent ) )
-				    strcat( buf, C_B );
+			{
+				if ( must_swim( room, room->pf_parent ) )
+					strcat( buf, C_B );
 
-			    strcat( buf, dir_small_name[room->pf_direction] );
-			    wrap += strlen( dir_small_name[room->pf_direction] );
-		    }
+				strcat( buf, dir_small_name[room->pf_direction] );
+				wrap += strlen( dir_small_name[room->pf_direction] );
+			}
 		}
 		else if ( !strcmp(current_room->area->name, "The Havens.") && !hexited )
 		{strcat(buf, C_D);
@@ -5568,25 +5569,25 @@ void show_path( ROOM_DATA *current )
 			wrap += 10;
 			hexited=1;
 
-		    if ( wrap > 70 && !disable_pathwrap )
-		    {
-			    strcat( buf, C_R ",\r\n" C_G );
-			    wrap = 0;
-		    }
-		    else if ( nr++ )
-		    {
-			    strcat( buf, C_R ", " C_G );
-			    wrap += 2;
-		    }
+			if ( wrap > 70 && !disable_pathwrap )
+			{
+				strcat( buf, C_R ",\r\n" C_G );
+				wrap = 0;
+			}
+			else if ( nr++ )
+			{
+				strcat( buf, C_R ", " C_G );
+				wrap += 2;
+			}
 
 			if ( ( room->pf_direction != -1 ) && ( room->pf_direction != -2 ) )
-		     {
-			    if ( must_swim( room, room->pf_parent ) )
-				    strcat( buf, C_B );
+			{
+				if ( must_swim( room, room->pf_parent ) )
+					strcat( buf, C_B );
 
-			     strcat( buf, dir_small_name[room->pf_direction] );
-                 wrap += strlen( dir_small_name[room->pf_direction] );
-		     }
+				strcat( buf, dir_small_name[room->pf_direction] );
+				wrap += strlen( dir_small_name[room->pf_direction] );
+			}
 		}
 		else if ( ( room->pf_direction != -1 ) && ( room->pf_direction != -2 ) )
 		{
@@ -5844,28 +5845,28 @@ void locate_room( char *name, int area, char *player )
 			}
 		}
 		if ( !found )
-		for ( r = current_area->rooms; r; r = r->next_in_area ) {
-			for ( i = 1; i < 14; i++ ) {
-				if ( r->exits[i] &&  r->exits[i]->area->name != current_area->name )
-				{
-					for ( room = r->exits[i]->area->rooms; room; room = room->next_in_area ) {
-						{   int a;
-							for ( a = 1; a < 10; a++)
-								if ( !strcmp( buf, room->name ) || (room->additional_name[a] != NULL && !strcmp(buf, room->additional_name[a] ) ) )
-								{
-									if ( !found ) {
-										found = room;
-										break;}
-									else
+			for ( r = current_area->rooms; r; r = r->next_in_area ) {
+				for ( i = 1; i < 14; i++ ) {
+					if ( r->exits[i] &&  r->exits[i]->area->name != current_area->name )
+					{
+						for ( room = r->exits[i]->area->rooms; room; room = room->next_in_area ) {
+							{   int a;
+								for ( a = 1; a < 10; a++)
+									if ( !strcmp( buf, room->name ) || (room->additional_name[a] != NULL && !strcmp(buf, room->additional_name[a] ) ) )
 									{
-										more = 1;
-										break;
-										break;
-										break;
+										if ( !found ) {
+											found = room;
+											break;}
+										else
+										{
+											more = 1;
+											break;
+											break;
+											break;
+										}
 									}
-								}
-						}
-					} } } }
+							}
+						} } } }
 	} else
 	{
 		for ( room = world; room; room = room->next_in_world )
@@ -6182,22 +6183,22 @@ void parse_eldsense( char *line )
 
 void parse_auraglance( char *line)
 {
-    char name[256];
-    char *buf = NULL,line2[256],buf2[256];
+	char name[256];
+	char *buf = NULL,line2[256],buf2[256];
 	AREA_DATA *farea = NULL;
-    /*You detect player's presence at Four Corners on Nordau Street in Enorian.*/
-    if (cmp("You detect ^'s presence at *",line))
-    return;
+	/*You detect player's presence at Four Corners on Nordau Street in Enorian.*/
+	if (cmp("You detect ^'s presence at *",line))
+		return;
 
-    get_string(line + 11, name, 256);
+	get_string(line + 11, name, 256);
 
-    line = strstr(line, " presence at ");
-    if (!line)
-       return;
+	line = strstr(line, " presence at ");
+	if (!line)
+		return;
 
-    line += 13;
+	line += 13;
 
-    buf = line;
+	buf = line;
 	while ( buf && strstr(buf, " in ") )
 	{
 		buf += 4;
@@ -6268,41 +6269,41 @@ void parse_window( char *line )
 
 void parse_cgc( char *line )
 {
-    if (!strncmp(line, "(",1) && strstr(line, "):") && strstr(line, "ocation: ") )
-    {
-    char buf[256],*buf2 = NULL,line2[256],buf3[256];
-	AREA_DATA *farea = NULL;
-    memset( buf, '\0', sizeof(buf) );
-    memset( line2, '\0', sizeof(line2) );
-    memset( buf3, '\0', sizeof(buf3) );
-    line = strstr(line, "ocation: ");
-    line += 9;
-    strncpy(buf, line,strlen(line)-1);
+	if (!strncmp(line, "(",1) && strstr(line, "):") && strstr(line, "ocation: ") )
+	{
+		char buf[256],*buf2 = NULL,line2[256],buf3[256];
+		AREA_DATA *farea = NULL;
+		memset( buf, '\0', sizeof(buf) );
+		memset( line2, '\0', sizeof(line2) );
+		memset( buf3, '\0', sizeof(buf3) );
+		line = strstr(line, "ocation: ");
+		line += 9;
+		strncpy(buf, line,strlen(line)-1);
 
-	buf2 = buf;
-	while ( buf2 && strstr(buf2, " in ") )
-	{
-		buf2 += 4;
-		if ( strstr(buf2, " in ") )
-			buf2 = strstr(buf2, " in ");
+		buf2 = buf;
+		while ( buf2 && strstr(buf2, " in ") )
+		{
+			buf2 += 4;
+			if ( strstr(buf2, " in ") )
+				buf2 = strstr(buf2, " in ");
+		}
+		strncpy( line2, buf, buf2 - buf );
+		line2[buf2-buf-4] = '.';
+		line2[buf2-buf-3] = 0;
+		if ( !strncmp( buf2, "the ", 4 ) ) {
+			buf2 += 4;
+		}
+		sprintf(buf3, "donotshow %s",buf2 );
+		farea = get_area_by_name( buf3 );
+		if ( farea && farea->name )
+		{
+			locate_room_in_area( line2, NULL ,0, farea );
+		}
+		else
+		{
+			locate_room( buf, 2, NULL );
+		}
 	}
-	strncpy( line2, buf, buf2 - buf );
-	line2[buf2-buf-4] = '.';
-	line2[buf2-buf-3] = 0;
-	if ( !strncmp( buf2, "the ", 4 ) ) {
-		buf2 += 4;
-	}
-	sprintf(buf3, "donotshow %s",buf2 );
-	farea = get_area_by_name( buf3 );
-	if ( farea && farea->name )
-	{
-		locate_room_in_area( line2, NULL ,0, farea );
-	}
-	else
-	{
-		locate_room( buf, 2, NULL );
-	}
-    }
 }
 
 
@@ -6398,8 +6399,8 @@ void parse_angelrite(char *li)
 		if ( ( line = strstr(line, " at ") ) )
 		{line += 4;
 			if ( !( end = strstr(line, ", with a health ") ) )
-			   if (	!( end = strstr(line, " with a health") ) )
-			      return;
+				if (	!( end = strstr(line, " with a health") ) )
+					return;
 			strncpy( buf, line, end - line );
 			buf[end-line] = '.';
 			buf[end-line+1] = 0;
@@ -6452,22 +6453,22 @@ void parse_scry( char *line )
 		return;
 	}
 
-		if ( !mirror ) {
-			line += 79;
-		}
-		else if ( !pool ) {
-			line += 75;
-		}
-		else if ( !fire ) {
-		    line += 101;
-        }
-		/* Next line: "sensing Whyte at Antioch Runners tent." */
-		/* Skip the first three words. */
-		line = get_string( line, buf, 256 );
-		line = get_string( line, name, 256 );
-		line = get_string( line, buf, 256 );
+	if ( !mirror ) {
+		line += 79;
+	}
+	else if ( !pool ) {
+		line += 75;
+	}
+	else if ( !fire ) {
+		line += 101;
+	}
+	/* Next line: "sensing Whyte at Antioch Runners tent." */
+	/* Skip the first three words. */
+	line = get_string( line, buf, 256 );
+	line = get_string( line, name, 256 );
+	line = get_string( line, buf, 256 );
 
-		locate_room( line, 1, name );
+	locate_room( line, 1, name );
 }
 
 
@@ -6896,16 +6897,13 @@ void parse_werescent( LINE *l )
 		strncat(werescentmsg, line, strlen(werescentmsg)+strlen(line));
 	}
 	if ( !strchr(line ,46) && werescent == 1 ) {
-		memset( werescentmsg, '\0', sizeof(werescentmsg) );
+		memset( werescentmsg, '\0', strlen(werescentmsg) );
 		strncpy(werescentmsg, line, strlen(line));
 		l->gag_ending = 1;
 		werescent = 2;
 		return;}
-	/* You see Name at Location. */
-	/*   if ( cmp( "You pick up the faint scent of *", line ) )
-		 return; */
 	if ( werescent == 2 ) {
-		memset(line, '\0', sizeof(line));
+		memset(line, '\0', strlen(line));
 		strcpy(line, werescentmsg);
 		werescent = 1;
 	}
@@ -7982,22 +7980,22 @@ void parse_aetoliastuff ( char *line )
 
 void parse_arealeylinesearch( char *line )
 {
-   if (!area_leylinesearch)
-     return;
-   if (strstr(line,"motes of light cascade around the untapped focal point here, wavering in and out of reality with each resonance of the leyline."))
-     {
-         area_leylinesearch = 0;
-         sleyroom = NULL;
-         		if ( auto_walk != 0 )
-		        {
-			     auto_walk = 0;
-			     justwarped = 0;
-                 dash_command = NULL;
-			     except = NULL;
-			    }
-         clientff(C_R"\r\n[LEYLINE FOUND]\r\n"C_0);
-         return;
-     }
+	if (!area_leylinesearch)
+		return;
+	if (strstr(line,"motes of light cascade around the untapped focal point here, wavering in and out of reality with each resonance of the leyline."))
+	{
+		area_leylinesearch = 0;
+		sleyroom = NULL;
+		if ( auto_walk != 0 )
+		{
+			auto_walk = 0;
+			justwarped = 0;
+			dash_command = NULL;
+			except = NULL;
+		}
+		clientff(C_R"\r\n[LEYLINE FOUND]\r\n"C_0);
+		return;
+	}
 }
 
 
@@ -8726,8 +8724,8 @@ void i_mapper_process_server_prompt( LINE *l )
 	if ( ssight )
 		ssight = 0;
 
-    if ( wingtmpdisable )
-        wingtmpdisable = 0;
+	if ( wingtmpdisable )
+		wingtmpdisable = 0;
 
 	memset( fullline, '\0', sizeof(fullline) );
 
@@ -8768,7 +8766,7 @@ void i_mapper_process_server_prompt( LINE *l )
 		norulerc = 0;
 		if ( current_room && current_room->ruler )
 		{
-			memset( current_room->ruler, '\0', sizeof(current_room->ruler) );
+			memset( current_room->ruler, '\0', strlen(current_room->ruler) );
 			current_room->ruler = NULL;
 		}}
 
@@ -8939,21 +8937,21 @@ void i_mapper_process_server_prompt( LINE *l )
 	}
 }
 /*
-void i_mapper_process_server_paragraph( LINES *l )
-{
+   void i_mapper_process_server_paragraph( LINES *l )
+   {
    int line;
 
 
    for ( line = 1; line <= l->nr_of_lines; line++ )
-     {
+   {
 
-     }
+   }
 
 
 
 
    i_mapper_process_server_prompt( NULL );
-}*/
+   }*/
 
 
 
@@ -9231,7 +9229,7 @@ void do_map_path( char *arg )
 	target = NULL;
 	justwarped = 0;
 	except = NULL;
-    autowing = 0;
+	autowing = 0;
 
 	if ( !arg[0] )
 	{
@@ -9350,7 +9348,7 @@ void do_map_path( char *arg )
 					return;
 				}
 			} else { /* Area */
-			    fromf=0;
+				fromf=0;
 				if ( !( room = get_entrance_room_for_area( buf ) ) )
 				{
 					clientff( C_R "[No area with the name '%s' was found.]\r\n" C_0, buf );
@@ -9774,9 +9772,9 @@ void do_map_config( char *arg )
 		{ "shrineradius", &disable_shrineradius,
 			"Shrine radius disabled.",
 			"Shrine radius enabled." },
-        { "shrinecheck", &disable_shrineradiuscheck,
-            "Shrine radius check disabled, shrine radius' will not affect shrine placement.",
-            "Shrine radius check disabled, shrine radius' will affect shrine placement." },
+		{ "shrinecheck", &disable_shrineradiuscheck,
+			"Shrine radius check disabled, shrine radius' will not affect shrine placement.",
+			"Shrine radius check disabled, shrine radius' will affect shrine placement." },
 		{ "farsightpath", &disable_farsightpath,
 			"Pathing to farsight disabled.",
 			"Pathing to farsight enabled." },
@@ -10327,7 +10325,7 @@ void do_map_ruler( char *arg )
 			}
 			if ( room->ruler != NULL )
 			{
-				memset( room->ruler, '\0', sizeof(room->ruler) );
+				memset( room->ruler, '\0', strlen(room->ruler) );
 				room->ruler = NULL;
 				clientff(C_R"[%s (%d) ruler removed]\r\n"C_0,room->name, room->vnum );
 			}
@@ -10341,7 +10339,7 @@ void do_map_ruler( char *arg )
 				return;}
 			for ( room = current_room->area->rooms; room; room = room->next_in_area )
 				if ( room->ruler ) {
-					memset( room->ruler, '\0', sizeof(room->ruler) );
+					memset( room->ruler, '\0', strlen(room->ruler) );
 					room->ruler = NULL;}
 			current_room->area->city = 0;
 			clientff(C_R"[Area: %s Ruler Cleared]\r\n"C_0, current_room->area->name);
@@ -10353,7 +10351,7 @@ void do_map_ruler( char *arg )
 				return;}
 			for ( room = world; room; room = room->next_in_world )
 				if ( room->ruler ) {
-					memset( room->ruler, '\0', sizeof(room->ruler) );
+					memset( room->ruler, '\0', strlen(room->ruler) );
 					room->ruler = NULL;}
 			clientfr("All ruler data deleted");
 		}
@@ -10366,7 +10364,7 @@ void do_map_ruler( char *arg )
 				clientff(C_R"[All rooms ruled by %s cleared]\r\n"C_0,op1);
 				for ( room = world; room; room = room->next_in_world )
 					if ( room->ruler && !strncmp(op1,room->ruler,strlen(op1)) ) {
-						memset( room->ruler, '\0', sizeof(room->ruler) );
+						memset( room->ruler, '\0', strlen(room->ruler) );
 						room->ruler = NULL;}}
 			else
 			{clientfr("Remove what?");
@@ -10475,30 +10473,30 @@ void do_map_ruler( char *arg )
 void do_map_wing( char *arg)
 {
 
-  if ( !arg[0] )
-  {
-      clientfr("Map wings. Commands:");
-      clientf( "Map wing set : Sets the custom wings command.\r\n"
-               "Map wing room: Sets the room of your wings.\r\n"
-               "Map wing rem : Removes the custom wing command and room.\r\n" );
-       clientff(C_Y"Currently cmd: '%s' room: '%d'\r\n"C_0,wingcmd == NULL ? "nothing" : wingcmd, wingroom );
-  }
-  if (strstr(arg,"set"))
-  {
-   wingcmd = malloc(60); strcpy(wingcmd, arg + 4);
-   clientff(C_R"[Wing command set to: '%s']\r\n"C_0,wingcmd);
-  }
-  if (strstr(arg,"room"))
-  {
-   wingroom = atoi(arg+5);
-   clientff(C_R"[Wing room set to: '%d']\r\n"C_0,wingroom);
-  }
-  if (strstr(arg,"rem"))
-  {
-   free_ptr(wingcmd);
-   wingroom = 0;
-   clientfr("Wing command and room deleted");
-  }
+	if ( !arg[0] )
+	{
+		clientfr("Map wings. Commands:");
+		clientf( "Map wing set : Sets the custom wings command.\r\n"
+				"Map wing room: Sets the room of your wings.\r\n"
+				"Map wing rem : Removes the custom wing command and room.\r\n" );
+		clientff(C_Y"Currently cmd: '%s' room: '%d'\r\n"C_0,wingcmd == NULL ? "nothing" : wingcmd, wingroom );
+	}
+	if (strstr(arg,"set"))
+	{
+		wingcmd = malloc(60); strcpy(wingcmd, arg + 4);
+		clientff(C_R"[Wing command set to: '%s']\r\n"C_0,wingcmd);
+	}
+	if (strstr(arg,"room"))
+	{
+		wingroom = atoi(arg+5);
+		clientff(C_R"[Wing room set to: '%d']\r\n"C_0,wingroom);
+	}
+	if (strstr(arg,"rem"))
+	{
+		free_ptr(wingcmd);
+		wingroom = 0;
+		clientfr("Wing command and room deleted");
+	}
 }
 
 
@@ -10831,66 +10829,66 @@ void do_area_find( char *arg )
 
 void do_area_leys( char *arg )
 {
-    if ( !current_area)
-    {
-        clientfr("No current area.");
-        return;
-    }
+	if ( !current_area)
+	{
+		clientfr("No current area.");
+		return;
+	}
 	if ( !strcmp(arg,"help") || !arg[0] )
-    {
-        clientfr("Area Leyline help");
-        clientff(" area leyline search  - Begins searching the current area for a leyline.\r\n"
-                 " area leyline skip    - Willskip past any room you can't enter.\r\n"
-                 " area leyline stop    - Stops the searching.\r\n");
-    }
-    if (!current_room)
-    {
-        clientfr("No currenet room");
-        return;
-    }
-    if (!strcmp(arg,"search"))
-    { clientfr("The Hunt for a Leyline has begun!");
-      area_leylinesearch = 1;
-      sleyroom = current_room->area->rooms;
-  	  init_openlist( NULL );
-	  init_openlist( sleyroom );
-	  path_finder( );
-	  go_next( );
-    }
-    if (!strcmp(arg,"skip"))
-    {
-      area_leylinesearch = 1;
-	  sleyroom = sleyroom->next_in_area;
-  	  init_openlist( NULL );
-	  init_openlist( sleyroom );
-	  path_finder( );
-	  clientfr( "Skipped one room." );
-      go_next( );
-    }
-    if (!strcmp(arg,"stop"))
-    {
-        area_leylinesearch = 0;
+	{
+		clientfr("Area Leyline help");
+		clientff(" area leyline search  - Begins searching the current area for a leyline.\r\n"
+				" area leyline skip    - Willskip past any room you can't enter.\r\n"
+				" area leyline stop    - Stops the searching.\r\n");
+	}
+	if (!current_room)
+	{
+		clientfr("No currenet room");
+		return;
+	}
+	if (!strcmp(arg,"search"))
+	{ clientfr("The Hunt for a Leyline has begun!");
+		area_leylinesearch = 1;
+		sleyroom = current_room->area->rooms;
+		init_openlist( NULL );
+		init_openlist( sleyroom );
+		path_finder( );
+		go_next( );
+	}
+	if (!strcmp(arg,"skip"))
+	{
+		area_leylinesearch = 1;
+		sleyroom = sleyroom->next_in_area;
+		init_openlist( NULL );
+		init_openlist( sleyroom );
+		path_finder( );
+		clientfr( "Skipped one room." );
+		go_next( );
+	}
+	if (!strcmp(arg,"stop"))
+	{
+		area_leylinesearch = 0;
 		init_openlist( NULL );
 		sleyroom = NULL;
 		clientfr("Searching Stopped");
 		return;
-    }
-    if (!strcmp(arg,"continue"))
-    {
-        if (!sleyroom)
-        {
-            clientfr("cannot continue searching");
-        }
-        else
-        {
-            area_leylinesearch = 1;
-            clientfr("Leyline search continuing");
-  	        init_openlist( NULL );
-	        init_openlist( sleyroom );
-	        path_finder( );
-	        go_next( );
-        }
-    }
+	}
+	if (!strcmp(arg,"continue"))
+	{
+		if (!sleyroom)
+		{
+			clientfr("cannot continue searching");
+		}
+		else
+		{
+			area_leylinesearch = 1;
+			clientfr("Leyline search continuing");
+			init_openlist( NULL );
+			init_openlist( sleyroom );
+			path_finder( );
+			go_next( );
+		}
+	}
 }
 
 
@@ -11577,11 +11575,11 @@ void do_area_info( char *arg )
 	sprintf( buf, "Area: %s", current_area->name );
 	clientfr( buf );
 
-    if (current_area->note)
-    {
-        sprintf(buf, "Area Note: %s",current_area->note );
-        clientfr(buf);
-    }
+	if (current_area->note)
+	{
+		sprintf(buf, "Area Note: %s",current_area->note );
+		clientfr(buf);
+	}
 
 	for ( room = current_area->rooms; room; room = room->next_in_area )
 	{
@@ -12012,7 +12010,7 @@ void do_map_shrine( char *arg )
 	if ( !strcmp(dname, "Setdivine") )
 	{
 		*size = toupper(size[0]);
-       if ( shrinetype == NULL || shrinetype[0] == 0 )
+		if ( shrinetype == NULL || shrinetype[0] == 0 )
 			sprintf(shrinetype,"%s","neutral");
 		for ( rc = world; rc; rc = rc->next_in_world )
 			if ( rc->shrinedivine && !strcmp( rc->shrinedivine, size ) ) {
@@ -12124,7 +12122,7 @@ void do_map_shrine( char *arg )
 		}
 		room->shrine = 0;
 		room->shrinemajor = 0;
-		memset(room->shrinedivine, 0, sizeof(room->shrinedivine));
+		memset(room->shrinedivine, 0, strlen(room->shrinedivine));
 		for ( r = world; r; r = r->next_in_world )
 			if ( r->shrineparrent == room->vnum || r == room)
 			{
@@ -12160,11 +12158,11 @@ void do_map_shrine( char *arg )
 		return;
 	}
 	if (!disable_shrineradiuscheck) {
-	for ( i = 1; i < 14; i++ ) {
-		if ( !update && room->exits[i] && (room->exits[i]->shrine ) ) {
-			if ( !hidden )
-				clientfr("The influence of another shrine is too close");
-			return;} }
+		for ( i = 1; i < 14; i++ ) {
+			if ( !update && room->exits[i] && (room->exits[i]->shrine ) ) {
+				if ( !hidden )
+					clientfr("The influence of another shrine is too close");
+				return;} }
 	}
 	if ( update )
 	{
@@ -14452,10 +14450,10 @@ void do_go( char *arg )
 		dash_command = "gallop ";
 	else if ( !strcmp(arg, "shift") )
 		dash_command = "sand shift ";
-    else if ( strstr(arg, "wing") )
-        artimsg = wingcmd;
-    else if ( autowing )
-         artimsg = wingcmd;
+	else if ( strstr(arg, "wing") )
+		artimsg = wingcmd;
+	else if ( autowing )
+		artimsg = wingcmd;
 	else if ( strstr(arg, "troops") )
 	{
 		strcpy(troopn, arg + 7 );
