@@ -109,7 +109,7 @@ void gtk_show_editor( )
 	GtkWidget* window;
 	GtkWidget* text;
 	GtkWidget* scrollwindow;
-	GtkWidget* table;
+	GtkWidget* grid;
 	GtkWidget* separator;
 	GtkWidget* send_button;
 	GtkWidget* load_button;
@@ -119,21 +119,21 @@ void gtk_show_editor( )
 	g_signal_connect (window, "delete-event",
 			G_CALLBACK (delete_event), NULL);
 
-	/* Create the table and add it to window.
+	/* Create the grid and add it to window.
 	 * Set the title if we have one. */
-	table = gtk_table_new (3, 2, FALSE);
-	gtk_container_add (GTK_CONTAINER (window), table);
+	grid = gtk_grid_new();
+	gtk_container_add (GTK_CONTAINER (window), grid);
 	if(composer_title != NULL) {
 		gtk_window_set_title (GTK_WINDOW (window), composer_title);
 	}
-	gtk_widget_show (table);
+	gtk_widget_show (grid);
 
 	/* Create the buff, clear it if empty */
 	buffer = gtk_text_buffer_new (NULL);
 
 	/* Create a textarea with content if existent.
 	 * Add it to a scrolled window and
-	 * then add it to table. */
+	 * then add it to grid. */
 	scrollwindow = gtk_scrolled_window_new(NULL, NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollwindow), 
 			GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
@@ -149,25 +149,25 @@ void gtk_show_editor( )
 	gtk_widget_show (text);
 	gtk_container_add (GTK_CONTAINER (scrollwindow), text);
 
-	gtk_table_attach_defaults (GTK_TABLE (table), scrollwindow, 0, 2, 0, 1);
+	gtk_grid_attach (GTK_GRID (grid), scrollwindow, 0, 2, 0, 1);
 
-	/* Create separator and ad it to table */
+	/* Create separator and ad it to grid */
 	separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-	gtk_table_attach_defaults (GTK_TABLE (table), separator, 0, 2, 1, 2);
+	gtk_grid_attach (GTK_GRID (grid), separator, 0, 2, 1, 2);
 	gtk_widget_show (separator);
 
-	/* Create send_button with signal-handler and add it to the table */
+	/* Create send_button with signal-handler and add it to the grid */
 	send_button = gtk_button_new_with_label ("Send to composer");
 	g_signal_connect (send_button, "clicked",
 			G_CALLBACK (send_to_composer), NULL);
-	gtk_table_attach_defaults (GTK_TABLE (table), send_button, 0, 1, 2, 3);
+	gtk_grid_attach (GTK_GRID (grid), send_button, 0, 1, 2, 3);
 	gtk_widget_show (send_button);
 
-	/* Create load_button with signal handler and add to table */
+	/* Create load_button with signal handler and add to grid */
 	load_button = gtk_button_new_with_label ("Reload composer buffer");
 	g_signal_connect (load_button, "clicked",
 			G_CALLBACK (load_from_composer), NULL);
-	gtk_table_attach_defaults (GTK_TABLE (table), load_button, 1, 2, 2, 3);
+	gtk_grid_attach (GTK_GRID (grid), load_button, 1, 2, 2, 3);
 	gtk_widget_set_sensitive(load_button, composer_content != NULL);
 	gtk_widget_show (load_button);
 
